@@ -1,29 +1,29 @@
 class Solution {
 public:
+    vector<string>result;
+    void fun(string digits, int i,string &curr,vector<string>&temp){
+        if(curr.size()==digits.size()){
+            result.push_back(curr);
+            return;
+        }
 
-    void fun(int index,vector<string>&ans,string &prefix,vector<string>&mp,string &digits){
-        if(digits.size()==prefix.size()){
-            ans.push_back(prefix);
+        int digit=digits[i]-'0';
+        if(digit==0|| digit==1){
+            fun(digits,i+1,curr,temp);
             return;
         }
-        int digit=digits[index]-'0';
-        if (digit < 2 || digit > 9) {
-            fun(index+1,ans, prefix,mp, digits);
-            return;
+
+        for(int j=0;j<temp[digit].size();j++){
+            curr.push_back(temp[digit][j]);
+            fun(digits,i+1,curr,temp);
+            curr.pop_back();
         }
-        for(char ch:mp[digit]){
-            prefix.push_back(ch);
-            fun(index+1,ans,prefix,mp,digits);
-            prefix.pop_back();
-        }
-        
     }
     vector<string> letterCombinations(string digits) {
-        if(digits.size()==0)return {};
-        vector<string>ans;
-        string prefix="";
-        vector<string>mp= {"", "", "abc", "def", "ghi", "jkl","mno", "pqrs", "tuv", "wxyz"};
-        fun(0,ans,prefix,mp,digits);
-        return ans;
+        vector<string>temp={"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+
+        string curr="";
+        fun(digits,0,curr,temp);
+        return result;
     }
 };
